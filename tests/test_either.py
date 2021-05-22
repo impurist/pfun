@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 
 from hypothesis import assume, given
@@ -84,3 +85,13 @@ class TestEither(MonadTest):
 
     def test_for_each(self):
         assert for_each(Right, range(3)) == Right((0, 1, 2))
+
+    def test_fold(self):
+        assert Right("Success").fold(
+            lambda _e: "Error" ,
+            lambda value:  value
+        ) == "Success"
+        assert Left(None).fold(
+            lambda _e: "Error" ,
+            lambda value:  value
+        ) == "Error"

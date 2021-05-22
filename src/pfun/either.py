@@ -123,6 +123,9 @@ class Right(Either_, Generic[A]):
     def and_then(self, f: Callable[[A], Either[B, C]]) -> Either[B, C]:
         return f(self.get)
 
+    def fold(self, _f: Callable[[A], Either[B, C]], g: Callable[[A], Either[B, C]]) -> Either[B, C]:
+        return g(self.get)
+
     def __eq__(self, other: Any) -> bool:
         """
         Test if ``other`` is a `Right` wrapping the same value as
@@ -187,6 +190,9 @@ class Left(Either_, Generic[B]):
 
     def and_then(self, f: Callable[[A], Either[B, C]]) -> Either[B, C]:
         return self
+
+    def fold(self, f: Callable[[A], Either[B, C]],  _g: Callable[[A], Either[B, C]]) -> Either[B, C]:
+        return f(self)
 
     def __repr__(self):
         return f'Left({repr(self.get)})'
